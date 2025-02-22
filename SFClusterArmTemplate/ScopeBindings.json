@@ -1,0 +1,52 @@
+﻿{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/scopeBindings.json",
+  "contentVersion": "0.0.0.1",
+
+  "scopeBindings": [
+    {
+      "scopeTagName": "AllParameters",
+      "bindings": [
+        {
+          "find": "__Cluster_Name__",
+          "replaceWith": "$azureResourceGroup()"
+        },
+        {
+          "find": "__App_Package_Url__",
+          "replaceWith": "https://abccentralstorage.blob.core.windows.net/pkg/ContosoSupport.APIPkg20221020.sfpkg"
+        },
+        {
+          "find": "__MA_Launcher_Package_Url__",
+          "replaceWith": "https://abccentralstorage.blob.core.windows.net/pkg/MdsAgentServicePackage20210402.sfpkg"
+        },
+        {
+          "find": "__User_Assigned_Identity_Name__",
+          "replaceWith": "ContosoSupportAssignedIdentity"
+        },
+        {
+          "find": "__MDM_Account_Name__",
+          "replaceWith": "ABCLAB"
+        },
+        {
+          "find": "__MDM_Namespace__",
+          "replaceWith": "ContosoSupport"
+        },
+        {
+          "find": "__Service_Fabric_Signin_Certificate_SubscriptionId__",
+          "replaceWith": "$azureSubscriptionId()"
+        },
+        {
+          "find": "__Service_Fabric_Signin_Certificate_Keyvault__",
+          "replaceWith": "ContosoAdsKV<SubscriptionName>"
+        },
+        {
+          "find": "__Service_Fabric_Signin_Certificate_Thumbprint__",
+          "replaceWith": "<CertificateThumbprint>"
+        },
+        {
+          "find": "__Service_Fabric_Signin_Certificate_Secret_Url__",
+          "replaceWith": "<CertificateSecretURL>"
+        }
+      ]
+    }
+  ]
+}

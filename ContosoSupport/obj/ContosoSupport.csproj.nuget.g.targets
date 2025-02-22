@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.cloud.instrumentationframework.metrics.extensions\2.2022.1006.2139\build\Microsoft.Cloud.InstrumentationFramework.Metrics.Extensions.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.cloud.instrumentationframework.metrics.extensions\2.2022.1006.2139\build\Microsoft.Cloud.InstrumentationFramework.Metrics.Extensions.targets')" />
+    <Import Project="$(NuGetPackageRoot)bond.csharp\9.0.1\build\Bond.CSharp.targets" Condition="Exists('$(NuGetPackageRoot)bond.csharp\9.0.1\build\Bond.CSharp.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.cloud.instrumentationframework\3.3.4.1\build\Microsoft.Cloud.InstrumentationFramework.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.cloud.instrumentationframework\3.3.4.1\build\Microsoft.Cloud.InstrumentationFramework.targets')" />
+    <Import Project="$(NuGetPackageRoot)genevamonitoringagent\45.14.4\build\GenevaMonitoringAgent.targets" Condition="Exists('$(NuGetPackageRoot)genevamonitoringagent\45.14.4\build\GenevaMonitoringAgent.targets')" />
+  </ImportGroup>
+</Project>

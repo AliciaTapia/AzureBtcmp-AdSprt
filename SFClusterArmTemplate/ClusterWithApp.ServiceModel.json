@@ -1,0 +1,53 @@
+﻿{
+  "$schema": "https://ev2schema.azure.net/schemas/2020-01-01/serviceModel.json",
+  "contentVersion": "1.0.0.0",
+  "serviceMetadata": {
+    "serviceGroup": "SFRP Cluster with MA and App",
+    "environment": "Test"
+  },
+  "serviceResourceGroupDefinitions": [
+    {
+      "name": "SFRPClusterResourceGroupDefinition",
+      "serviceResourceDefinitions": [
+        {
+          "name": "SFRPClusterDefinition",
+          "armTemplatePath": "Templates\\ServiceFabricCluster.template.json"
+        },
+        {
+          "name": "SFRPAppDefinition",
+          "armTemplatePath": "Templates\\App.template.json"
+        },
+        {
+          "name": "SFRPMALauncherDefinition",
+          "armTemplatePath": "Templates\\MALauncher.template.json"
+        }
+      ]
+    }
+  ],
+  "serviceResourceGroups": [
+    {
+      "azureResourceGroupName": "lima4017",
+      "location": "centralus",
+      "instanceOf": "SFRPClusterResourceGroupDefinition",
+      "azureSubscriptionId": "<SubscriptionId>",
+      "scopeTags": [ { "name": "AllParameters" } ],
+      "serviceResources": [
+        {
+          "name": "Cluster",
+          "instanceOf": "SFRPClusterDefinition",
+          "armParametersPath": "Parameters\\ServiceFabricCluster.parameters.json"
+        },
+        {
+          "name": "App",
+          "instanceOf": "SFRPAppDefinition",
+          "armParametersPath": "Parameters\\App.parameters.json"
+        },
+        {
+          "name": "MALauncher",
+          "instanceOf": "SFRPMALauncherDefinition",
+          "armParametersPath": "Parameters\\MALauncher.parameters.json"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+﻿import "Ifx.bond"
+
+namespace ContosoAdsSupport
+
+enum AccessType
+{
+    create,
+    read,
+    update,
+    delete
+}
+
+struct EntityAccess : Ifx.OperationSchema
+{
+    10: required wstring entityType;
+    20: required wstring entityId;
+    30: required int32 pageNumber;
+    40: required wstring filter; 
+    50: required AccessType accessType = nothing;
+    60: required uint16 response;
+}

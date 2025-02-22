@@ -1,0 +1,39 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "value": "__Cluster_Name__"
+    },
+    "applicationTypeName": {
+      "value": "FabricMonitoringServiceApplication"
+    },
+    "applicationTypeVersion": {
+      "value": "8.0.2"
+    },
+    "applicationPackageUrl": {
+      "value": "__MA_Launcher_Package_Url__"
+    },
+    "applicationName": {
+      "value": "Monitoring"
+    },
+    "fabricHealthServiceName": {
+      "value": "Monitoring~FabricHealth"
+    },
+    "fabricHealthServiceTypeName": {
+      "value": "FabricMonitoringServiceType"
+    },
+    "genevaAgentServiceName": {
+      "value": "Monitoring~GenevaAgent"
+    },
+    "genevaAgentServiceTypeName": {
+      "value": "FabricMdsAgentServiceType"
+    },
+    "mdmAccountName": {
+        "value": "__MDM_Account_Name__"
+    },
+    "mdmNamespace": {
+        "value": "__MDM_Namespace__"
+    }
+  }
+}

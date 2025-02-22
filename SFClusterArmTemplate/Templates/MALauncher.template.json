@@ -1,0 +1,167 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of your cluster - Between 3 and 23 characters. Letters and numbers only"
+      }
+    },
+    "applicationTypeName": {
+      "type": "string",
+      "metadata": {
+        "description": "The application type name"
+      }
+    },
+    "applicationTypeVersion": {
+      "type": "string",
+      "metadata": {
+        "description": "The application type version"
+      }
+    },
+    "applicationPackageUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "The full URL to the application package sfpkg file"
+      }
+    },
+    "applicationName": {
+      "type": "string",
+      "metadata": {
+        "description": "The application name"
+      }
+    },
+    "fabricHealthServiceName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the fabric health service resource in the format of {applicationName}~{consoleServiceName}."
+      }
+    },
+    "fabricHealthServiceTypeName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the fabric health service type."
+      }
+    },
+    "genevaAgentServiceName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the geneva agent service resource in the format of {applicationName}~{consoleServiceName}."
+      }
+    },
+    "genevaAgentServiceTypeName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the geneva agent service type."
+      }
+    },
+    "mdmAccountName": {
+      "type": "string",
+      "defaultValue": "ABCLAB",
+      "metadata": {
+        "description": "MDM account name."
+      }
+    },
+    "mdmNamespace": {
+      "type": "string",
+      "defaultValue": "ContosoSupport",
+      "metadata": {
+        "description": "MDM namespace."
+      }
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "serviceFabricMIApiVersion": "2019-06-01-preview",
+    "serviceFabricAppApiVersion": "2019-03-01"
+  },
+  "resources": [
+    {
+      "apiVersion": "[variables('serviceFabricAppApiVersion')]",
+      "type": "Microsoft.ServiceFabric/clusters/applicationTypes",
+      "name": "[concat(parameters('clusterName'), '/', parameters('applicationTypeName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [],
+      "properties": {}
+    },
+    {
+      "apiVersion": "[variables('serviceFabricAppApiVersion')]",
+      "type": "Microsoft.ServiceFabric/clusters/applicationTypes/versions",
+      "name": "[concat(parameters('clusterName'), '/', parameters('applicationTypeName'), '/', parameters('applicationTypeVersion'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceFabric/clusters/', parameters('clusterName'), '/applicationTypes/', parameters('applicationTypeName'))]"
+      ],
+      "properties": {
+        "appPackageUrl": "[parameters('applicationPackageUrl')]"
+      }
+    },
+    {
+      "apiVersion": "[variables('serviceFabricMIApiVersion')]",
+      "type": "Microsoft.ServiceFabric/clusters/applications",
+      "name": "[concat(parameters('clusterName'), '/', parameters('applicationName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceFabric/clusters/', parameters('clusterName'), '/applicationTypes/', parameters('applicationTypeName'), '/versions/', parameters('applicationTypeVersion'))]"
+      ],
+      "properties": {
+        "typeName": "[parameters('applicationTypeName')]",
+        "typeVersion": "[parameters('applicationTypeVersion')]",
+        "parameters": {
+          "ClusterName": "[parameters('clusterName')]",
+          "MdmAccountName": "[parameters('mdmAccountName')]",
+          "MdmNamespace": "[parameters('mdmNamespace')]",
+          "IncludeApplicationVersionInHealthReports": "false"
+        }
+      }
+    },
+    {
+      "apiVersion": "[variables('serviceFabricMIApiVersion')]",
+      "type": "Microsoft.ServiceFabric/clusters/applications/services",
+      "name": "[concat(parameters('clusterName'), '/', parameters('applicationName'), '/', parameters('genevaAgentServiceName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceFabric/clusters/', parameters('clusterName'), '/applications/', parameters('applicationName'))]"
+      ],
+      "properties": {
+        "serviceKind": "Stateless",
+        "serviceTypeName": "[parameters('genevaAgentServiceTypeName')]",
+        "instanceCount": "-1", 
+        "partitionDescription": {
+          "partitionScheme": "Singleton"
+        },
+        "correlationScheme": [],
+        "serviceLoadMetrics": [],
+        "servicePlacementPolicies": []
+      }
+    },
+    {
+      "apiVersion": "[variables('serviceFabricMIApiVersion')]",
+      "type": "Microsoft.ServiceFabric/clusters/applications/services",
+      "name": "[concat(parameters('clusterName'), '/', parameters('applicationName'), '/', parameters('fabricHealthServiceName'))]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceFabric/clusters/', parameters('clusterName'), '/applications/', parameters('applicationName'))]"
+      ],
+      "properties": {
+        "provisioningState": "Default",
+        "serviceKind": "Stateful",
+        "serviceTypeName": "[parameters('fabricHealthServiceTypeName')]",
+        "targetReplicaSetSize": "3",
+        "minReplicaSetSize": "3",
+        "replicaRestartWaitDuration": "00:01:00.0",
+        "quorumLossWaitDuration": "00:02:00.0",
+        "standByReplicaKeepDuration": "00:00:30.0",
+        "partitionDescription": {
+          "partitionScheme": "Singleton"
+        },
+        "hasPersistedState": "true",
+        "correlationScheme": [],
+        "serviceLoadMetrics": [],
+        "servicePlacementPolicies": [],
+        "defaultMoveCost": "Low"
+      }
+    }
+  ]
+}
